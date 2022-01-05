@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Menu</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/5.8.0/css/all.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="../Menu.css" />
+    
+    <script src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 70px;
+            bottom: 0;
+            width: 80%;
+        }
+
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 200px;
+            top: 100px;
+            left: 25%;
+            padding: 10px;
+        }
+        
+        .map-overlay .map-overlay-inner {
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .map-overlay-inner fieldset {
+            border: none;
+            padding: 0;
+            margin: 0 0 10px;
+        }
+        
+        .map-overlay-inner fieldset:last-child {
+            margin: 0;
+        }
+        
+        .map-overlay-inner select {
+            width: 100%;
+        }
+        
+        .map-overlay-inner label {
+            display: block;
+            font-weight: bold;
+            margin: 0 0 5px;
+        }
+        
+        .map-overlay-inner button {
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .map-overlay-inner button:focus {
+            outline: none;
+        }
+        
+        .map-overlay-inner button:hover {
+            box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+
+        .calculation-box {
+            height: 75px;
+            width: 150px;
+            position: absolute;
+            bottom: 40px;
+            left: 22%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        p {
+            font-family: 'Open Sans';
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .menu_ul {
+            top: 70px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 20%;
+            background-color: #f1f1f1;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+
+            .menu_ul li a {
+                display: block;
+                color: #000;
+                padding: 16px 16px;
+                text-decoration: none;
+            }
+
+                .menu_ul li a:hover {
+                    background-color: #555;
+                    color: white;
+                }
+
+                .menu_ul li a:focus {
+                    background-color: #4CAF50; /* 设置点击之后颜色变化 */
+                    color: white;
+                }
+
+                .menu_ul li a span {
+                    cursor: pointer;
+                    display: inline-block;
+                    position: relative;
+                    transition: 0.3s;
+                    font-size: 20px;
+                }
+
+                .menu_ul li a span:after {
+                    content: '»';
+                    position: absolute;
+                    opacity: 0;
+                    top: 0;
+                    right: -20px;
+                    transition: 0.5s;
+                    color: white;
+                }
+
+                .menu_ul li a:hover span {
+                    padding-right: 25px;
+                }
+
+                    .menu_ul li a:hover span:after {
+                        opacity: 1;
+                        right: 0;
+                    }
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.2/mapbox-gl-draw.css" type="text/css">
+    <div class="menu">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../BasicFunction/Menu.html">基本功能</a></li>
+            <li><a href="../js/webpack-demo/dist">增强功能</a></li>
+            <li><a href="../about.html">关于</a></li>
+        </ul>
+        <div class="search-box">
+            <input class="search-txt" type="text" placeholder="搜索功能" />
+            <a class="search-btn" href="#">
+                <i class="fas fa-search"></i>
+            </a>
+        </div>
+    </div>
+    <ul class="menu_ul">
+        <li onclick=menu_click("1")><a href="#contact"><span>· 显示地图 </span></a></li>
+        <li onclick=menu_click("2")><a href="#news"><span>· 显示多边形信息 </span></a></li>
+        <li onclick=menu_click("3")><a href="#about"><span>· 绘制图形 </span></a></li>
+        <li onclick=menu_click("4")><a href="#about"><span>· 添加三维模型 </span></a></li>
+        <li onclick=menu_click("5")><a href="#about"><span>· 修改投影</span></a></li>
+        <li onclick=menu_click("6")><a href="#about"><span>· 全屏控件 </span></a></li>
+        <li onclick=menu_click("7")><a href="#about"><span>· 地理搜索功能 </span></a></li>
+        <li onclick=menu_click("8")><a href="#about"><span>· 添加栅格数据</span></a></li>
+        <li onclick=menu_click("9")><a href="#about"><span>· 添加视频 </span></a></li>
+        <li onclick=menu_click("10")><a href="#about"><span>· 动态三维地形 </span></a></li>
+        <li onclick=menu_click("11")><a href="#about"><span>· 修改图层颜色 </span></a></li>
+    </ul>
+    <div style="margin-left:20%;">
+        <div id="map"></div>
+    </div>
+    <div id="help-box" class="calculation-box">
+        <p>Click the map to draw a polygon.</p>
+        <div id="calculated-area"></div>
+    </div>
+    <script src="./map.js"></script>
+    <div id="mapoverlay" class="map-overlay top" style="display:none">
+        <div class="map-overlay-inner">
+        <fieldset>
+        <label>Select layer</label>
+        <select id="layer" name="layer">
+        <!-- Each value matches a layer ID. -->
+        <option value="water">Water</option>
+        <option value="building">Buildings</option>
+        <option value="triangles">Triangles</option>
+        </select>
+        </fieldset>
+        <fieldset>
+        <label>Choose a color</label>
+        <div id="swatches"></div>
+        </fieldset>
+        </div>
+        </div>
+        <div id="mapoverlay2" class="map-overlay top" style="display:none">
+            <div class="map-overlay-inner">
+            <fieldset>
+            <label>Select projection</label>
+            <select id="projection" name="projection">
+            <option value="albers">Albers</option>
+            <option value="equalEarth">Equal Earth</option>
+            <option value="equirectangular">Equirectangular</option>
+            <option value="lambertConformalConic" selected="">
+            Lambert Conformal Conic
+            </option>
+            <option value="mercator">Mercator</option>
+            <option value="naturalEarth">Natural Earth</option>
+            <option value="winkelTripel">Winkel Tripel</option>
+            </select>
+            </fieldset>
+            <fieldset class="conic-param-input">
+            <label>Center Longitude: <span id="lng-value">0</span></label>
+            <input id="lng" type="range" min="-180" max="180" step="any" value="0">
+            </fieldset>
+            <fieldset class="conic-param-input">
+            <label>Center Latitude: <span id="lat-value">30</span></label>
+            <input id="lat" type="range" min="-90" max="90" step="any" value="30">
+            </fieldset>
+            <fieldset class="conic-param-input">
+            <label>Southern Parallel Lat: <span id="lat1-value">30</span></label>
+            <input id="lat1" type="range" min="-90" max="90" step="any" value="30">
+            </fieldset>
+            <fieldset class="conic-param-input">
+            <label>Northern Parallel Lat: <span id="lat2-value">30</span></label>
+            <input id="lat2" type="range" min="-90" max="90" step="any" value="30">
+            </fieldset>
+            </div>
+            </div>
+</body>
+</html>

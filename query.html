@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <title>Document</title>
+    <link href="https://cdn.bootcss.com/font-awesome/5.8.0/css/all.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="./Menu.css" />
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 70px;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .center-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2f3640;
+            height: 40px;
+            border-radius: 40px;
+            padding: 10px;
+        }
+
+        .center-btn {
+            color: #e84118;
+            float: right;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2f3640;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.4s;
+            text-decoration: none;
+        }
+
+        .center-txt {
+            border: none;
+            background: none;
+            outline: none;
+            float: left;
+            padding: 0 6px;
+            color: white;
+            font-size: 16px;
+            transition: 0.4s;
+            line-height: 40px;
+            width: 240px;
+        }
+
+        .center-box:hover > .center-btn {
+            background: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="menu">
+        <ul>
+            <li><a href="./index.html">首页</a></li>
+            <li><a href="./BasicFunction/Menu.html">基本功能</a></li>
+            <li><a href="./js/webpack-demo/dist">增强功能</a></li>
+            <li><a href="./about.html">关于</a></li>
+        </ul>
+        <div class="search-box">
+            <input class="search-txt" type="text" placeholder="搜索功能" />
+            <a class="search-btn" href="#">
+                <i class="fas fa-search"></i>
+            </a>
+        </div>
+    </div>
+    <div class="center-box">
+        <input id="centertxt" class="center-txt" type="text" placeholder="搜索功能" />
+        <button class="center-btn" type="button" onclick="buttonclick"><i class="fas fa-search"></i></button>
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWlhb2NodW5odWFpeGlhIiwiYSI6ImNrd3UwZ2g3cjFqb2Eycm8wM3ZyeGE2aDIifQ.VN_iWJQPbZYL21af_9gtpA';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [116.4039, 39.914914],
+            maxZoom: 16,
+            minZoom: 9,
+            zoom: 9.68
+        });
+
+        var Basic = { '菜单': 'Menu.html' };
+
+        // 根据键(key)查找对应的值(value),返回值value
+        function find(key) {
+            return this.Basic[key];
+        };
+
+        function buttonclick(event) {
+            console.log('aaa');
+            //console.log(document.getElementById("centertxt").value)
+        };
+
+    </script>
+</body>
+</html>
